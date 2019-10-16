@@ -10,7 +10,8 @@ from scipy.spatial.distance import squareform
 from transparent_imshow import transp_imshow
 import matplotlib.cm as cm
 from scipy import ndimage, misc
-from standardizer import standardizer
+from src.image_shear import shear_single
+from src.standardizer import standardizer
 
 
 class imageGenerator(object):
@@ -21,14 +22,14 @@ class imageGenerator(object):
     def pad(self, rows, cols):
         result = np.ones((rows,cols))
         result[:self.image.shape[0], :self.image.shape[1]] = self.image
-        self.padded_image = result
+        self.image = result
 
     def zoom(self, row, col):
-        self.zoom = self.padded_image[row:row+1000, col:col+1000]
+        self.zoom = self.image[row:row+1000, col:col+1000]
 
 
-    def classify(self, row, n):
-        for i in range(n):
+    def classify(self, row, start, end, prefix):
+        for i in range(start, end):
             size = 30
             row_index = row
             col_index = i
@@ -45,6 +46,7 @@ class imageGenerator(object):
             masked_pixel1 = np.ma.masked_where(masked_pixel1 != 1, masked_pixel1)
 
             window = self.zoom[row_index:row_index+size, col_index:col_index+size]
+            colored_percentage = np.count_nonzero(window==0)/(30**2)
             pixel_value = window[15, 15]
             window_sobel = ndimage.sobel(window, axis=0)
             above_area = np.mean(window_sobel[10:15, 11:19])
@@ -63,31 +65,53 @@ class imageGenerator(object):
             ax[2].imshow(masked_pixel1, cmap='jet')
             ax[2].imshow(masked_pixel, cmap='prism', interpolation='none')
             extent = ax[1].get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-
+            l_filepath = f'../data/train/lines/{prefix}{i:04}'
+            d_filepath = f'../data/train/drawings/{prefix}{i:04}'
 
             if pixel_value == 0.0:
                 print(above_area)
                 print(below_area)
                 print(above_area - -below_area)
-                if np.abs(above_area) >= 0.8 and np.abs(below_area) >= 0.8:
-                    if np.abs(above_area - -below_area) < 0.4:
+                if np.abs(above_area) >= 0.7 and np.abs(below_area) >= 0.7:
+                    if np.abs(above_area - -below_area) < 0.35:
                         ax[2].set_title('Line')
-                        fig.savefig(f'../lines/1030{i:04}', bbox_inches=extent)
-                else:
-                    if np.abs(above_area) >= 0.1 and np.abs(below_area) >= 0.1: 
-                        if np.abs(above_area - -below_area) < 0.01:
+                        fig.savefig(l_filepath, bbox_inches=extent)
+                        shear_single(l_filepath)
+                    else:
+                        if colored_percentage < 0.3:
                             ax[2].set_title('Line')
-                            fig.savefig(f'../lines/1030{i:04}', bbox_inches=extent)
+                            fig.savefig(l_filepath, bbox_inches=extent)
+                            shear_single(l_filepath)
                         else:
                             ax[2].set_title('Drawing')
-                            fig.savefig(f'../drawings/1030{i:04}', bbox_inches=extent)
+                            fig.savefig(d_filepath, bbox_inches=extent)
+                            shear_single(d_filepath)
+                elif np.abs(above_area) >= 0.1 and np.abs(below_area) >= 0.1: 
+                    if np.abs(above_area - -below_area) < 0.01:
+                        ax[2].set_title('Line')
+                        fig.savefig(l_filepath, bbox_inches=extent)
+                        shear_single(l_filepath)
+                    else:
+                        if colored_percentage < 0.3:
+                            ax[2].set_title('Line')
+                            fig.savefig(l_filepath, bbox_inches=extent)
+                            shear_single(l_filepath)
+                        else:
+                            ax[2].set_title('Drawing')
+                            fig.savefig(d_filepath, bbox_inches=extent)
+                            shear_single(d_filepath)
+                else:
+                    if colored_percentage < 0.3:
+                            ax[2].set_title('Line')
+                            fig.savefig(l_filepath, bbox_inches=extent)
+                            shear_single(l_filepath)
                     else:
                         ax[2].set_title('Drawing')
-                        fig.savefig(f'../drawings/1030{i:04}', bbox_inches=extent)
+                        fig.savefig(d_filepath, bbox_inches=extent)
+                        shear_single(d_filepath)
             print(i)
 
     
-
 
 
 
