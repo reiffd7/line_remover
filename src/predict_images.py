@@ -64,7 +64,7 @@ class lineScrubber(object):
         fig.savefig(filepath, bbox_inches=extent)
         shear_single(filepath)
 
-        
+
     def scrubber(self, size=30):
         for i in range(self.fig_rows-(size+1)):
             print('Were on row: {}'.format(i))
@@ -105,5 +105,11 @@ if __name__ == '__main__':
     figure = images.binarized_images[4]
     zoom = zoom(1300, 100, figure)
 
-    image_scrubber = lineScrubber(zoom, model_path, 'test')
-    image_scrubber.scrubber()
+    # image_scrubber = lineScrubber(zoom, model_path, 'test')
+    # image_scrubber.scrubber()
+    fig, ax = plt.subplots(1, 1)
+    ax.imshow(zoom, cmap='gray')
+    extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    filepath = os.path.join(RESULTS_DIRECTORY, 'test.png'.format(self.figname))
+    fig.savefig(filepath, bbox_inches=extent)
+    shear_single(filepath)
