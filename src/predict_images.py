@@ -95,8 +95,8 @@ class lineScrubber(object):
 
 if __name__ == '__main__':
     ruled = os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/*')
-    image = os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/Sketch_Page_108.jpg')
-    images = standardizer(ruled, image)
+    image_path = os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/Sketch_Page_108.jpg')
+    images = standardizer(ruled, image_path)
     # images.greyscale(6)
     images.greyscale_one()
     images.standardize_one()
