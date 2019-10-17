@@ -107,17 +107,16 @@ if __name__ == '__main__':
     figure = images.binarized_images[4]
     zoom = zoom(1300, 100, figure)
 
-    image_scrubber = lineScrubber(zoom, model_path, 'test')
-    image_scrubber.scrubber()
+    # image_scrubber = lineScrubber(zoom, model_path, 'test')
+    # image_scrubber.scrubber()
 
     # row = 348
     # col = 359
     # window = zoom[1: 31, 1:31]
-    # fig, ax = plt.subplots(1, 1)
-    # ax.imshow(window, cmap='gray')
-   
-    # extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-    # filepath = os.path.join(RESULTS_DIRECTORY, 'test1.png')
-    # fig.savefig(filepath, bbox_inches=extent)
-    # border = (70, 5, 70, 5)
-    # shear_single(filepath, border)
+    fig, ax = plt.subplots(1, 1)
+    ax.imshow(zoom, cmap='gray')
+    extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    filepath = os.path.join(RESULTS_DIRECTORY, 'test2.png')
+    fig.savefig(filepath, bbox_inches=extent)
+    border = (70, 5, 70, 5)
+    shear_single(filepath, border)
