@@ -14,6 +14,7 @@ SCRIPT_DIRECTORY = os.path.split(this_file)[0]
 ROOT_DIRECTORY = os.path.split(SCRIPT_DIRECTORY)[0]
 MODEL_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'models')  
 FRAMES_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'data/to_predict')
+RESULTS_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'data/scrubbed_images')
 sys.path.append(ROOT_DIRECTORY)
 
 
@@ -22,11 +23,12 @@ def zoom(row, col, image):
 
 class lineScrubber(object):
 
-    def __init__(self, image, model_path):
-        self.image = image
-        self.image_rows = image.shape[0]
-        self.image_cols = image.shape[1]
+    def __init__(self, fig, model_path, figname):
+        self.fig = fig
+        self.fig_rows = fig.shape[0]
+        self.fig_cols = fig.shape[1]
         self.model = load_model(model_path)
+        self.figname = figname
 
 
     def _create_and_save_fig(self, window, filepath):
@@ -43,26 +45,36 @@ class lineScrubber(object):
         return self.model.predict(x)[0][0]
 
     def _alter_figure(self, i, j, prediction):
+        print(prediction)
         if prediction == 1.0:
-            self.image[i+15, i+15] = 1.0
+            self.fig[i+15, j+15] = 1.0
             print('pixel changed')
 
 
     def scrubber(self, size=30):
-        for i in range(self.image_rows-(size+1)):
+        for i in range(self.fig_rows-(size+1)):
             print('Were on row: {}'.format(i))
-            for j in range(self.image_cols-(size+1)):
-                window = self.image[i:i+size, j:j+size]
+            for j in range(self.fig_cols-(size+1)):
+                window = self.fig[i:i+size, j:j+size]
                 pixel_val = window[15, 15]
                 print('Pixel Value: {}'.format(pixel_val))
-                if pixel_val = 0.0
+                if pixel_val == 0.0:
                     print('Black pixel!')
                     filepath = os.path.join(FRAMES_DIRECTORY, '{}pix.png'.format(i*j))
                     self._create_and_save_fig(window, filepath)
                     print('created fig')
                     prediction = self._predict_fig(filepath)
                     print('modeled fig')
-                    self.alter_figure(i, j, prediction)
+                    self._alter_figure(i, j, prediction)
+        self.save_fig()
+
+    def save_fig(self):
+        fig, ax = plt.subplots(1, 1)
+        ax.imshow(self.fig, cmap='gray')
+        extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        filepath = os.path.join(RESULTS_DIRECTORY, '{}result.png'.format(self.figname))
+        fig.savefig(filepath, bbox_inches=extent)
+        shear_single(filepath)
 
 
     
@@ -80,6 +92,10 @@ if __name__ == '__main__':
     images.binarize(0.7)
     print('Binarized')
     
+    model_path = os.path.join(MODEL_DIRECTORY, 'model_names/test5.h5')
     
-    image = images.binarized_images[4]
-    zoom = zoom(1300, 100, image)
+    figure = images.binarized_images[4]
+    zoom = zoom(1300, 100, figure)
+
+    image_scrubber = lineScrubber(zoom, model_path, 'test')
+    image_scrubber.scrubber()
