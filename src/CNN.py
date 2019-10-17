@@ -36,12 +36,16 @@ class imageCNN(object):
         self.nb_classes = sum(len(dirnames) for _, dirnames, _ in os.walk(self.train_path))
 
 
-    def param_init(self, epochs, batch_size, image_size, base_filters, final_layer_neurons):
+    def param_init(self, epochs, batch_size, image_size, base_filters, final_layer_neurons, kernel_size, pool_size, activation):
         self.epochs = epochs
         self.batch_size = batch_size
         self.image_size = image_size
         self.nb_filters = base_filters
         self.neurons = final_layer_neurons
+        self.kernel_size = (kernel_size[0], kernel_size[1])
+        self.pool_size = (pool_size[0], pool_size[1])
+        self.activation = activation
+
 
     def load_and_featurize_data(self):
         train_datagen = ImageDataGenerator(rescale=1./255)
@@ -51,59 +55,55 @@ class imageCNN(object):
         self.train_generator = train_datagen.flow_from_directory(
                         self.train_path,
                         target_size=(30, 30),
-                        batch_size=1,
+                        batch_size=self.batch_size,
                         class_mode='binary',
                         shuffle=True)
         
         self.test_generator = test_datagen.flow_from_directory(
                         self.test_path,
                         target_size=(30, 30),
-                        batch_size=1,
+                        batch_size=self.batch_size,
                         class_mode='binary',
                         shuffle=False)
 
         self.holdout_generator = holdout_datagen.flow_from_directory(
                         self.holdout_path,
                         target_size=(30, 30),
-                        batch_size=1,
+                        batch_size=self.batch_size,
                         class_mode='binary',
                         shuffle=False)
 
 
-    def define_model(self, kernel_size=(3, 3), pool_size=(2, 2), dropout=0.25, num_blocks=1):
+    def define_model(self, dropout=0.25, num_blocks=1):
 
-        print('Beginning model defining process... ')
         self.model = Sequential()
-        self.model.add(Conv2D(64, (4, 4), input_shape=(self.image_size[0], self.image_size[1], 3),
+        self.model.add(Conv2D(self.nb_filters, (4, 4), input_shape=(30, 30, 3),
                                 padding='valid',
                                 name='Convolution-1',
                                 activation='relu'))
-        print('First layer added')
-        self.model.add(Conv2D(32, (4, 4), padding='valid',
+        self.model.add(Conv2D(self.nb_filters, (4, 4), padding='valid',
                                 name='Convolution-2',
                                 activation='relu'))
-        print('Second layer added')
         self.model.add(MaxPooling2D(pool_size=(4, 4),
                                     name='Pooling-1'))
-        print('Pooling :)')
-        self.model.add(Conv2D(32, (2, 2), padding='valid',
+
+        self.model.add(Conv2D(self.nb_filters, (2, 2), padding='valid',
                                 name='Convolution-3',
                                 activation='relu'))
-        print('Thrid layer added')
-        self.model.add(Conv2D(64, (2, 2), padding='valid',
+        self.model.add(Conv2D(self.nb_filters, (2, 2), padding='valid',
                                 name='Convolution-4',
                                 activation='relu'))
-        print('Fourth layer added')
-        self.model.add(MaxPooling2D(pool_size=pool_size,
+        self.model.add(MaxPooling2D(pool_size=(2, 2),
                                     name='Pooling-2'))
-        print('Pooling :)')
-        self.model.add(Dropout(dropout))
-        print('Dropping ', dropout)
+
         self.model.add(Flatten())
-        print('Model flattened out to ', self.model.output_shape)
-        self.model.add(Dense(self.neurons, name='Dense-1', activation='relu'))
-        self.model.add(Dense(1, name='Dense-2', activation='sigmoid'))
-        print('Compiling... ')
+        self.model.add(Dense(self.neurons,
+                                name='Dense-1',
+                                activation='relu'))
+        self.model.add(Dropout(0.25))
+        self.model.add(Dense(1,
+                                name='Dense-2',
+                                activation='sigmoid'))
 
         self.model.compile(loss='binary_crossentropy',
                     optimizer='adam',
@@ -186,15 +186,30 @@ if __name__ == '__main__':
 
     print('Creating class')
 
-    cnn = imageCNN(train_path, test_path, holdout_path, 'First')
+    model_name = input("Enter model name: ")
+
+    cnn = imageCNN(train_path, test_path, holdout_path, model_name)
+
+    epochs = int(input("Enter epochs:  "))
+    batch_size = int(input("Enter batch size: "))
+    num_filters = int(input("Enter number of filters:  "))
+    neurons = int(input("Enter number of neurons: "))
+    kernel_size = tuple([eval(x) for x in input("Enter kernel size: ").split(',')])
+    pool_size = tuple([eval(x) for x in input("Enter pool size: ").split(',')])
+    activation = input("Enter activation function: ")
+
+    print(kernel_size[0])
 
     print("Initializing Parameters")
     cnn.param_init(
-        epochs=5, 
-        batch_size=32, 
+        epochs=epochs, 
+        batch_size=batch_size,
         image_size=(30, 30), 
-        base_filters=16, 
-        final_layer_neurons=128)
+        base_filters=num_filters, 
+        final_layer_neurons=neurons,
+        kernel_size=kernel_size,
+        pool_size = pool_size,
+        activation = activation)
 
 
     print("Loading and featurizing the data")
@@ -209,4 +224,3 @@ if __name__ == '__main__':
     cnn.evaluate_model()
     cnn.save_history()
     cnn.save_model()
-    # cnn.save_model_predictions()
