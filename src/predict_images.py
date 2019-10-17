@@ -80,6 +80,7 @@ class lineScrubber(object):
                     prediction = self._predict_fig(filepath)
                     print('modeled fig')
                     self._alter_figure(i, j, prediction)
+                print("({}, {})".format(i, j))
         self.save_fig()
 
    
