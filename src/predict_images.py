@@ -13,8 +13,8 @@ this_file = os.path.realpath(__file__)
 SCRIPT_DIRECTORY = os.path.split(this_file)[0]
 ROOT_DIRECTORY = os.path.split(SCRIPT_DIRECTORY)[0]
 MODEL_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'models')  
-FRAMES_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'data/to_predict')
-RESULTS_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'data/scrubbed_images')
+FRAMES_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'data/to_predict1')
+RESULTS_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'data/scrubbed_images1')
 sys.path.append(ROOT_DIRECTORY)
 
 
@@ -83,6 +83,7 @@ class lineScrubber(object):
                     print('modeled fig')
                     self._alter_figure(i, j, prediction)
                 print("({}, {})".format(i, j))
+            self.save_fig(os.path.join(RESULTS_DIRECTORY, '{}row.csv'.format(i)), os.path.join(RESULTS_DIRECTORY, '{}row.png'.format(i)))
         self.save_fig(os.path.join(RESULTS_DIRECTORY, '{}result.csv'.format(self.figname)), os.path.join(RESULTS_DIRECTORY, '{}result.png'.format(self.figname)))
 
    
