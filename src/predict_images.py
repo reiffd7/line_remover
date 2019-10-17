@@ -52,8 +52,8 @@ class lineScrubber(object):
         return self.model.predict(x)[0][0]
 
     def _alter_figure(self, i, j, prediction):
-        print(prediction)
-        if prediction == 1.0:
+        prediction = round(prediction)
+        if prediction == 1:
             self.fig[i+15, j+15] = 1.0
             print('pixel changed')
 
