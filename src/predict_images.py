@@ -57,16 +57,17 @@ class lineScrubber(object):
             self.fig[i+15, j+15] = 1.0
             print('pixel changed')
 
-    def save_fig(self):
+    def save_fig(self, filepath):
+        np.savetxt(filepath, self.fig, delimiter=',')
         fig, ax = plt.subplots(1, 1)
         ax.imshow(self.fig, cmap='gray')
         extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        filepath = os.path.join(RESULTS_DIRECTORY, '{}result.png'.format(self.figname))
         fig.savefig(filepath, bbox_inches=extent)
-        shear_single(filepath)
+    
 
 
     def scrubber(self, size=30):
+        self.save_fig(os.path.join(RESULTS_DIRECTORY, '{}before.csv'.format(self.figname)))
         for i in range(self.fig_rows-(size+1)):
             print('Were on row: {}'.format(i))
             for j in range(self.fig_cols-(size+1)):
@@ -82,7 +83,7 @@ class lineScrubber(object):
                     print('modeled fig')
                     self._alter_figure(i, j, prediction)
                 print("({}, {})".format(i, j))
-        self.save_fig()
+        self.save_fig(os.path.join(RESULTS_DIRECTORY, '{}result.png'.format(self.figname)))
 
    
 
