@@ -110,6 +110,6 @@ if __name__ == '__main__':
     fig, ax = plt.subplots(1, 1)
     ax.imshow(zoom, cmap='gray')
     extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-    filepath = os.path.join(RESULTS_DIRECTORY, 'test.png'.format(self.figname))
+    filepath = os.path.join(RESULTS_DIRECTORY, 'test.png')
     fig.savefig(filepath, bbox_inches=extent)
     shear_single(filepath)
