@@ -56,7 +56,7 @@ class lineScrubber(object):
             self.fig[i+15, j+15] = 1.0
             print('pixel changed')
 
-     def save_fig(self):
+    def save_fig(self):
         fig, ax = plt.subplots(1, 1)
         ax.imshow(self.fig, cmap='gray')
         extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
