@@ -42,7 +42,8 @@ class lineScrubber(object):
         ax.imshow(window, cmap='gray')
         extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
         fig.savefig(filepath, bbox_inches=extent)
-        shear_single(filepath)
+        border = (70, 5, 70, 5)
+        shear_single(filepath, border)
 
     def _predict_fig(self, filepath, target_size=(30, 30)):
         img = image.load_img(filepath, target_size=(target_size[0], target_size[1]))
@@ -108,9 +109,15 @@ if __name__ == '__main__':
 
     image_scrubber = lineScrubber(zoom, model_path, 'test')
     image_scrubber.scrubber()
+
+    # row = 348
+    # col = 359
+    # window = zoom[1: 31, 1:31]
     # fig, ax = plt.subplots(1, 1)
-    # ax.imshow(zoom, cmap='gray')
+    # ax.imshow(window, cmap='gray')
+   
     # extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-    # filepath = os.path.join(RESULTS_DIRECTORY, 'test.png')
+    # filepath = os.path.join(RESULTS_DIRECTORY, 'test1.png')
     # fig.savefig(filepath, bbox_inches=extent)
-    # shear_single(filepath)
+    # border = (70, 5, 70, 5)
+    # shear_single(filepath, border)

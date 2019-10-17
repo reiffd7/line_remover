@@ -13,9 +13,9 @@ def shear(image_list):
         im = ImageOps.crop(im, 10)
         im.save(image)
 
-def shear_single(filepath):
+def shear_single(filepath, border):
     im = Image.open(filepath)
-    im = ImageOps.crop(im, 10)
+    im = ImageOps.crop(im, border)
     im.save(filepath)
 
 
