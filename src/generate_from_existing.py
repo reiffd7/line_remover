@@ -11,6 +11,13 @@ sys.path.append(ROOT_DIRECTORY)
 
 
 class imageGenerator(object):
+    '''
+    This class takes a path to a directory of images, the directory we want to
+    export images to, and the number of images we want to create. With that 
+    information, we generate new images that are our original images but skewed,
+    zoomed, rotated, etc. The new images are saved into our export directory.
+    '''
+    
 
     def __init__(self, import_path, export_path, n):
         self.import_path = import_path

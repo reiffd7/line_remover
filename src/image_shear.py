@@ -3,7 +3,9 @@ from scipy.misc import imread
 import glob
 from PIL import Image, ImageOps
 
-
+# '''
+# These functions are used to remove borders from image lists and individual images
+# '''
 
 def shear(image_list):
     for image in image_list:

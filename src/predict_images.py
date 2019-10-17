@@ -22,6 +22,12 @@ def zoom(row, col, image):
         return image[row:row+1000, col:col+2000]
 
 class lineScrubber(object):
+    '''
+    This class takes in a binarized image, a cnn, model, and a figure name. 
+    It iterates through every pixel of the image and predicts if it is a line or
+    a drawing. If the image is a line, the pixel is removed. After this process, the 
+    scrubbed figure is saved. 
+    '''
 
     def __init__(self, fig, model_path, figname):
         self.fig = fig
@@ -50,7 +56,15 @@ class lineScrubber(object):
             self.fig[i+15, j+15] = 1.0
             print('pixel changed')
 
+     def save_fig(self):
+        fig, ax = plt.subplots(1, 1)
+        ax.imshow(self.fig, cmap='gray')
+        extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        filepath = os.path.join(RESULTS_DIRECTORY, '{}result.png'.format(self.figname))
+        fig.savefig(filepath, bbox_inches=extent)
+        shear_single(filepath)
 
+        
     def scrubber(self, size=30):
         for i in range(self.fig_rows-(size+1)):
             print('Were on row: {}'.format(i))
@@ -68,13 +82,7 @@ class lineScrubber(object):
                     self._alter_figure(i, j, prediction)
         self.save_fig()
 
-    def save_fig(self):
-        fig, ax = plt.subplots(1, 1)
-        ax.imshow(self.fig, cmap='gray')
-        extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        filepath = os.path.join(RESULTS_DIRECTORY, '{}result.png'.format(self.figname))
-        fig.savefig(filepath, bbox_inches=extent)
-        shear_single(filepath)
+   
 
 
     

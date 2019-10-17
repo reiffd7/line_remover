@@ -23,6 +23,12 @@ sys.path.append(ROOT_DIRECTORY)
 class imageCNN(object):
 
     def __init__(self, train_path, test_path, holdout_path, model_name):
+        '''
+        train_path: path to our train images directory containing lines and drawings folder
+        test_path: path to our test images directory containing lines and drawings folder
+        holdout: path to our holdout images directory containing lines and drawings folder
+        model_name: str representing what we want our model to be called
+        '''
         self.train_path = train_path
         self.test_path = test_path
         self.holdout_path = holdout_path
@@ -48,6 +54,10 @@ class imageCNN(object):
 
 
     def load_and_featurize_data(self):
+        '''
+        Each directory is accessed, and we create generators that resize
+        our images to 30x30
+        '''
         train_datagen = ImageDataGenerator(rescale=1./255)
         test_datagen = ImageDataGenerator(rescale=1./255)
         holdout_datagen = ImageDataGenerator(rescale=1./255)
@@ -75,7 +85,12 @@ class imageCNN(object):
 
 
     def define_model(self, dropout=0.25, num_blocks=1):
-
+        '''
+        This function defines the structure of the model. It specifies
+        that four convolution layers will be added with a pooling layer in between
+        and at the end. Following convolution/pooling, we flatten the images and use a 
+        sigmoid activation function to makde a prediction.
+        '''
         self.model = Sequential()
         self.model.add(Conv2D(self.nb_filters, (4, 4), input_shape=(30, 30, 3),
                                 padding='valid',
@@ -131,6 +146,9 @@ class imageCNN(object):
         
 
     def save_history(self):
+        '''
+        This function saves our metrics associated with each epoch into a csv for easy plotting
+        '''
         hist_path = os.path.join(MODEL_DIRECTORY, 'model_history/{}.csv'.format(self.model_name))
         with open(hist_path, 'w') as csv_file:
             my_dict = self.hist.history

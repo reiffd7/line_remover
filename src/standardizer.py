@@ -13,6 +13,12 @@ from scipy import ndimage, misc
 
 
 class standardizer(object):
+    '''
+    This class takes in a list of RGB images. It has the capability to
+    create a list of greyscale images. From the greyscale images, we standardize
+    each image and then binarize each image. The class also can plot as many 
+    images as we want in a grid
+    '''
 
     def __init__(self, image_list):
         self.image_list = image_list

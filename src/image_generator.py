@@ -15,6 +15,13 @@ from src.standardizer import standardizer
 
 
 class imageGenerator(object):
+    '''
+    This class takes in a single binarized image. It has the capability to create
+    a zoomed or padded image from the binarized image. Its main function is to iterate
+    through a line in 30x30 frames and classify whether or not the central pixel (15, 15)
+    in the frame is from a line or a drawing. The classification is based on sobel values
+    and % of the frame which is colored (black). 
+    '''
 
     def __init__(self, image):
         self.image = image
