@@ -20,8 +20,9 @@ class standardizer(object):
     images as we want in a grid
     '''
 
-    def __init__(self, image_list):
+    def __init__(self, image_list, image):
         self.image_list = image_list
+        self.image = image
 
 
     def greyscale(self, n):
@@ -34,6 +35,8 @@ class standardizer(object):
                 continue
         self.greyscale_image_list = np.array(greyscale_images)
 
+    def greyscale_one(self):
+        self.greyscale_image = imread(self.image, mode = 'L')
 
     def standardize(self):
         standardized_image_list = []
@@ -41,6 +44,9 @@ class standardizer(object):
             standardized_image = (image - np.min(image))/(np.max(image) - np.min(image))
             standardized_image_list.append(standardized_image)
         self.standardized_image_list = np.array(standardized_image_list)
+    
+    def standardize_one(self):
+        self.standardized_image = (self.greyscale_image - np.min(self.greyscale_image))/(np.max(self.greyscale_image) - np.min(self.greyscale_image))
 
     def binarize(self, threshold):
         binarized_images = []
@@ -48,6 +54,9 @@ class standardizer(object):
             binarized = 1.0 * (image > threshold)
             binarized_images.append(binarized)
         self.binarized_images = np.array(binarized_images)
+
+    def binarize_one(self, threshold):
+        self.binarized_image = 1.0* (self.standardized_image > threshold)
 
     def visualize(self, rows, cols):
         fig, ax = plt.subplots(rows, cols, figsize = (20, 10))

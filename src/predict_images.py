@@ -94,29 +94,34 @@ class lineScrubber(object):
 
 
 if __name__ == '__main__':
-    ruled = glob.glob(os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/*'))
-    images = standardizer(ruled)
-    images.greyscale(6)
-    images.standardize()
+    ruled = os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/*')
+    image = os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/Sketch_Page_108.jpg')
+    images = standardizer(ruled, image)
+    # images.greyscale(6)
+    images.greyscale_one()
+    images.standardize_one()
+    # images.standardize()
     print('Standardized')
-    images.binarize(0.7)
+    images.binarize_one(0.7)
     print('Binarized')
+    # images.visualize(1, 5)
     
     model_path = os.path.join(MODEL_DIRECTORY, 'model_names/test5.h5')
     
-    figure = images.binarized_images[4]
+    figure = images.binarized_image
     zoom = zoom(1300, 100, figure)
 
-    # image_scrubber = lineScrubber(zoom, model_path, 'test')
-    # image_scrubber.scrubber()
+
+    image_scrubber = lineScrubber(zoom, model_path, 'test')
+    image_scrubber.scrubber()
 
     # row = 348
     # col = 359
     # window = zoom[1: 31, 1:31]
-    fig, ax = plt.subplots(1, 1)
-    ax.imshow(zoom, cmap='gray')
-    extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-    filepath = os.path.join(RESULTS_DIRECTORY, 'test2.png')
-    fig.savefig(filepath, bbox_inches=extent)
-    border = (70, 5, 70, 5)
-    shear_single(filepath, border)
+    # fig, ax = plt.subplots(1, 1)
+    # ax.imshow(zoom, cmap='gray')
+    # extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    # filepath = os.path.join(RESULTS_DIRECTORY, 'test2.png')
+    # fig.savefig(filepath, bbox_inches=extent)
+    # border = (70, 5, 70, 5)
+    # shear_single(filepath, border)
