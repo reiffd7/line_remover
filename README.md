@@ -8,7 +8,6 @@ __          | Uncle Peter | __
 
 1. [Overview](#overview)
 2. [The Strategy](#the-strategy)
-2. [Data](#data)
 3. [EDA](#eda)
 4. [Data Classification](#data-classification)
 5. [CNN Structure](#cnn-structure)
