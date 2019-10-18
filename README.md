@@ -61,7 +61,10 @@ To execute my strategy, I wanted to start by binarizing each image. This way, I 
 
 Binarization across a large span of images was only possible after further standardization. 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;x_i=\frac{x_i - x_{min}}{x_{max} - x_{min}}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+
+<img src="https://latex.codecogs.com/gif.latex?x_i=\frac{x_i - x_{min}}{x_{max} - x_{min}} " />
+
+
 
 My standardization technique reduced each pixel to a value between 0 and 1 which made for easy visualization. 
 
