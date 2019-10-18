@@ -97,11 +97,12 @@ As I iterated through pixels, first I would look for a tight gradient. If it exi
 
 **Challenges**
 
-Boundaries betwen lines and drawings proved difficult to deal with. This was classified as a drawing:
+Boundaries betwen lines and drawings proved difficult to deal with. 
 
-Drawing Class |
-:-----------
-![giphy](/presentation_images/boundary.png)
+
+Drawing Class | Line Class
+:-------------------------:|:-------------------------: 
+![greyscale](/presentation_images/boundary.png)  |  ![staff_removal](/presentation_images/boundary1.png)
 
 
 ## CNN Structure
