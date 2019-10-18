@@ -155,8 +155,8 @@ This step is extremely computational expensive. Most images are larger than 4000
 
 Look Top Right|
 :-----------
-![giphy](/presentation_images/test3_before.png)
-![giphy](/presentation_images/test3_after.png)
+![giphy](/presentation_images/results2.png)
+![giphy](/presentation_images/results1.png)
 
 
 
