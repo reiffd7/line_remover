@@ -19,7 +19,7 @@ sys.path.append(ROOT_DIRECTORY)
 
 
 def zoom(row, col, image):
-        return image[row:row+1000, col:col+2000]
+        return image[row:row+500, col:col+500]
 
 class lineScrubber(object):
     '''
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     model_path = os.path.join(MODEL_DIRECTORY, 'model_names/test5.h5')
     
     figure = images.binarized_image
-    zoom = zoom(1300, 100, figure)
+    zoom = zoom(1500, 700, figure)
 
 
     image_scrubber = lineScrubber(zoom, model_path, 'test')
