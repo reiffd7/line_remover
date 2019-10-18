@@ -81,6 +81,7 @@ class lineScrubber(object):
                     print('created fig')
                     prediction = self._predict_fig(filepath)
                     print('modeled fig')
+                    os.remove(filepath)
                     self._alter_figure(i, j, prediction)
                 print("({}, {})".format(i, j))
             self.save_fig(os.path.join(RESULTS_DIRECTORY, '{}row.csv'.format(i)), os.path.join(RESULTS_DIRECTORY, '{}row.png'.format(i)))
