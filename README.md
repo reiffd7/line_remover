@@ -153,7 +153,7 @@ This step is extremely computational expensive. Most images are larger than 4000
 
 ## Results
 
-Look Top Right|
+Look Top|
 :-----------
 ![giphy](/presentation_images/results2.png)
 ![giphy](/presentation_images/results1.png)
