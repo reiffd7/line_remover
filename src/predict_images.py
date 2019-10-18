@@ -99,7 +99,7 @@ class lineScrubber(object):
 
 if __name__ == '__main__':
     ruled = os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/*')
-    image_path = os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/Sketch_Page_108.jpg')
+    image_path = os.path.join(ROOT_DIRECTORY, 'Sketches/Ruled/Sketch_Page_033.jpg')
     images = standardizer(ruled, image_path)
     # images.greyscale(6)
     images.greyscale_one()
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     model_path = os.path.join(MODEL_DIRECTORY, 'model_names/test5.h5')
     
     figure = images.binarized_image
-    zoom = zoom(1500, 700, figure)
+    zoom = zoom(3000, 300, figure)
 
 
     image_scrubber = lineScrubber(zoom, model_path, 'test')
