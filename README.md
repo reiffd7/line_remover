@@ -50,9 +50,10 @@ Due to the difference in quality across the images, I could find a process by wh
 
 I found a new strategy from a paper that showed how it was possible to remove staff lines from music scores. Instead of looking at the entire picture, this paper looked at 28 x 28 windows, classified if the central pixel came from a staff or symbol. A CNN was then trained on staff and symbol classifications. Staff classification were then removed. The results were impressive. 
 
-  Windows | Results
-:-------------------------:|:-------------------------: 
-![windows](/presentation_images/windows.png)  |  ![staff_removal](/presentation_images/staff_removal.png)
+
+Windows         | Classification | Results
+:-------------------------:|:-------------------------: | :-------------------------:
+![uncle_peter](/presentation_images/windows.png)  |  ![uncle_peter](/presentation_images/staff_class.png)|![uncle_peter](/presentation_images/staff_removal.png)
 
 ## EDA
 
@@ -165,6 +166,10 @@ Not Perfect|
 
 
 ## Further Work
+
+
+**Image Scrubbing**
+<li> Save images as arrays instead of saving matplotlib figures</li>
 
 **The Method**
 <li> It might be worth looking into other methods for line removal like an autoencoder. This method did a great job of maintaining picture quality but is extremely computationally expensive.</li>

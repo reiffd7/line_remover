@@ -93,7 +93,7 @@ class imageCNN(object):
         '''
         self.model = Sequential()
         self.model.add(Conv2D(self.nb_filters, (4, 4), input_shape=(30, 30, 3),
-                                padding='valid',
+                                Bding='valid',
                                 name='Convolution-1',
                                 activation='relu'))
         self.model.add(Conv2D(self.nb_filters, (4, 4), padding='valid',
