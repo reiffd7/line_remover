@@ -123,6 +123,7 @@ I designed my CNN through a process of trial and error. Throughout the process, 
 | Kernel Size         | 4 x 4   |
 | Pool Size           | 2 x 2   |
 | Activation Function | Relu    |
+| Optimizer | Adam    |
 
 
 ## CNN Results
